@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QPrabhupadaDictionaryWindow</class>
+ <widget class="QMainWindow" name="QPrabhupadaDictionaryWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>320</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>320</width>
+    <height>480</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Словарь Шрилы Прабхупады</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="PrabhupadaDictionary.qrc">
+    <normaloff>:/Icon/resources/PrabhupadaDictionary.ico</normaloff>:/Icon/resources/PrabhupadaDictionary.ico</iconset>
+  </property>
+  <property name="whatsThis">
+   <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Словарь Его Божественной Милости основателя-ачарьи Международного Общества сознания Кришны Шри Шримад Абхая Чаранаравидны Бхактиведанты Свами Прабхупады!&lt;br /&gt;Познакомиться с его книгами можно на сайте &lt;a href=&quot;https://vedabase.io&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://vedabase.io!&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="vlPrabhuadaMain">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayoutLanguage" stretch="1,3,3">
+      <item>
+       <widget class="QSpinBox" name="sbFontSize">
+        <property name="focusPolicy">
+         <enum>Qt::WheelFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Размер шрифта</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="minimum">
+         <number>14</number>
+        </property>
+        <property name="maximum">
+         <number>24</number>
+        </property>
+        <property name="value">
+         <number>14</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="ComboBoxLanguage">
+        <property name="focusPolicy">
+         <enum>Qt::WheelFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Язык словаря</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="ComboBoxLanguageUI">
+        <property name="focusPolicy">
+         <enum>Qt::WheelFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Язык программы словаря&lt;br/&gt;Шрилы Прабхупады&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayoutRow">
+      <item>
+       <widget class="QLineEdit" name="lineEditRowIndicator">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="toolTip">
+         <string>Текущая строка / всего строк</string>
+        </property>
+        <property name="whatsThis">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Индикатор, который показывает номер текущей строки, а также общее количество строк в таблице!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="vlDictionary">
+      <item>
+       <widget class="QTableView" name="tbvPrabhupadaDictionary">
+        <property name="font">
+         <font>
+          <family>Gaura Times</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="tabKeyNavigation">
+         <bool>false</bool>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <attribute name="horizontalHeaderCascadingSectionResizes">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>false</bool>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSplitter" name="splSanskritTranslate">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="childrenCollapsible">
+         <bool>false</bool>
+        </property>
+        <widget class="QComboBox" name="ComboBoxSanskrit">
+         <property name="font">
+          <font>
+           <family>Gaura Times</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Поиск по санскриту!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Поиск по санскриту!&lt;/p&gt;&lt;p&gt;Можно использовать регулярные выражения!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="ComboBoxTranslate">
+         <property name="font">
+          <font>
+           <family>Gaura Times</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Поиск по переводу!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Поиск по переводу!&lt;/p&gt;&lt;p&gt;Можно использовать регулярные выражения!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="mbPrabupadaDictionary">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>320</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <widget class="QMenu" name="menuAction">
+    <property name="title">
+     <string>&amp;Действие</string>
+    </property>
+    <addaction name="actionFind"/>
+    <addaction name="actionCaseSensitive"/>
+    <addaction name="actionDelete"/>
+    <addaction name="actionInsert"/>
+    <addaction name="actionRemove_Duplicates"/>
+    <addaction name="actionWhats_This_mode"/>
+    <addaction name="actionGoToRow"/>
+    <addaction name="actionAbout"/>
+    <addaction name="ActionSaveAllLetterToFile"/>
+    <addaction name="actionRegularExpression"/>
+    <addaction name="actionAutoPercentBegin"/>
+    <addaction name="actionAutoPercentEnd"/>
+   </widget>
+   <widget class="QMenu" name="menuSet_Bookmark">
+    <property name="title">
+     <string>&amp;Установить закладку</string>
+    </property>
+    <addaction name="actionSet_Bookmark_0"/>
+    <addaction name="actionSet_Bookmark_1"/>
+    <addaction name="actionSet_Bookmark_2"/>
+    <addaction name="actionSet_Bookmark_3"/>
+    <addaction name="actionSet_Bookmark_4"/>
+    <addaction name="actionSet_Bookmark_5"/>
+    <addaction name="actionSet_Bookmark_6"/>
+    <addaction name="actionSet_Bookmark_7"/>
+    <addaction name="actionSet_Bookmark_8"/>
+    <addaction name="actionSet_Bookmark_9"/>
+    <addaction name="actionDeleteAllBookmarks"/>
+   </widget>
+   <widget class="QMenu" name="menuGo_Bookmarks">
+    <property name="title">
+     <string>&amp;К закладке</string>
+    </property>
+    <addaction name="actionGo_to_bookmark_0"/>
+    <addaction name="actionGo_to_bookmark_1"/>
+    <addaction name="actionGo_to_bookmark_2"/>
+    <addaction name="actionGo_to_bookmark_3"/>
+    <addaction name="actionGo_to_bookmark_4"/>
+    <addaction name="actionGo_to_bookmark_5"/>
+    <addaction name="actionGo_to_bookmark_6"/>
+    <addaction name="actionGo_to_bookmark_7"/>
+    <addaction name="actionGo_to_bookmark_8"/>
+    <addaction name="actionGo_to_bookmark_9"/>
+   </widget>
+   <addaction name="menuAction"/>
+   <addaction name="menuSet_Bookmark"/>
+   <addaction name="menuGo_Bookmarks"/>
+  </widget>
+  <widget class="QToolBar" name="tbPrabhupada">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonFollowStyle</enum>
+   </property>
+   <property name="floatable">
+    <bool>true</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionDelete"/>
+   <addaction name="actionFind"/>
+   <addaction name="actionInsert"/>
+   <addaction name="actionWhats_This_mode"/>
+   <addaction name="actionCaseSensitive"/>
+   <addaction name="actionRemove_Duplicates"/>
+   <addaction name="actionGoToRow"/>
+   <addaction name="actionAbout"/>
+   <addaction name="actionRegularExpression"/>
+   <addaction name="actionAutoPercentBegin"/>
+   <addaction name="actionAutoPercentEnd"/>
+   <addaction name="actionDeleteAllBookmarks"/>
+  </widget>
+  <action name="actionFind">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/Find.png</normaloff>:/ToolButton/resources/Find.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Найти</string>
+   </property>
+   <property name="iconText">
+    <string>&amp;Найти</string>
+   </property>
+   <property name="shortcut">
+    <string>Return</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionCaseSensitive">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/CaseSensitive.png</normaloff>:/ToolButton/resources/CaseSensitive.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Различать регистр</string>
+   </property>
+   <property name="iconText">
+    <string>&amp;Различать регистр</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/Delete.png</normaloff>:/ToolButton/resources/Delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Удалить</string>
+   </property>
+   <property name="iconText">
+    <string>&amp;Удалить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Del</string>
+   </property>
+  </action>
+  <action name="actionInsert">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/Insert.png</normaloff>:/ToolButton/resources/Insert.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Вставить</string>
+   </property>
+   <property name="iconText">
+    <string>&amp;Вставить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Ins</string>
+   </property>
+  </action>
+  <action name="actionRemove_Duplicates">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/RemoveDuplicates.png</normaloff>:/ToolButton/resources/RemoveDuplicates.png</iconset>
+   </property>
+   <property name="text">
+    <string>Удалить &amp;дубликаты</string>
+   </property>
+   <property name="iconText">
+    <string>Удалить &amp;дубликаты</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_0">
+   <property name="text">
+    <string>Установить закладку &amp;0</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_1">
+   <property name="text">
+    <string>Установить закладку &amp;1</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_2">
+   <property name="text">
+    <string>Установить закладку &amp;2</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_3">
+   <property name="text">
+    <string>Установить закладку &amp;3</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_4">
+   <property name="text">
+    <string>Установить закладку &amp;4</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_5">
+   <property name="text">
+    <string>Установить закладку &amp;5</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+5</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_6">
+   <property name="text">
+    <string>Установить закладку &amp;6</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+6</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_7">
+   <property name="text">
+    <string>Установить закладку &amp;7</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+7</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_8">
+   <property name="text">
+    <string>Установить закладку &amp;8</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+8</string>
+   </property>
+  </action>
+  <action name="actionSet_Bookmark_9">
+   <property name="text">
+    <string>Установить закладку &amp;9</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+9</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_0">
+   <property name="text">
+    <string>К закладке &amp;0</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+0</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_1">
+   <property name="text">
+    <string>К закладке &amp;1</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+1</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_2">
+   <property name="text">
+    <string>К закладке &amp;2</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+2</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_3">
+   <property name="text">
+    <string>К закладке &amp;3</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+3</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_4">
+   <property name="text">
+    <string>К закладке &amp;4</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+4</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_5">
+   <property name="text">
+    <string>К закладке &amp;5</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+5</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_6">
+   <property name="text">
+    <string>К закладке &amp;6</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+6</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_7">
+   <property name="text">
+    <string>К закладке &amp;7</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+7</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_8">
+   <property name="text">
+    <string>К закладке &amp;8</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+8</string>
+   </property>
+  </action>
+  <action name="actionGo_to_bookmark_9">
+   <property name="text">
+    <string>К закладке &amp;9</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+9</string>
+   </property>
+  </action>
+  <action name="actionWhats_This_mode">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/WhatsThis.png</normaloff>:/ToolButton/resources/WhatsThis.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Режим вопроса</string>
+   </property>
+   <property name="iconText">
+    <string>&amp;Режим вопроса</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F1</string>
+   </property>
+  </action>
+  <action name="actionGoToRow">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/GoToRow.png</normaloff>:/ToolButton/resources/GoToRow.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Перейти к строке</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/About.png</normaloff>:/ToolButton/resources/About.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;О программе</string>
+   </property>
+   <property name="iconText">
+    <string>&amp;О программе</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="ActionSaveAllLetterToFile">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/SaveBukva.png</normaloff>:/ToolButton/resources/SaveBukva.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить буквы в файл</string>
+   </property>
+  </action>
+  <action name="actionDeleteAllBookmarks">
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/DeleteAllBookmarks.png</normaloff>:/ToolButton/resources/DeleteAllBookmarks.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Удалить все закладки</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+0</string>
+   </property>
+  </action>
+  <action name="actionRegularExpression">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/RegularExpression.png</normaloff>:/ToolButton/resources/RegularExpression.png</iconset>
+   </property>
+   <property name="text">
+    <string>Регулярные выра&amp;жения</string>
+   </property>
+   <property name="iconText">
+    <string>Регулярные выражения</string>
+   </property>
+  </action>
+  <action name="actionAutoPercentBegin">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/AutoPercentBegin.png</normaloff>:/ToolButton/resources/AutoPercentBegin.png</iconset>
+   </property>
+   <property name="text">
+    <string>Авто % в на&amp;чале</string>
+   </property>
+   <property name="iconText">
+    <string>Авто % в начале</string>
+   </property>
+  </action>
+  <action name="actionAutoPercentEnd">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="PrabhupadaDictionary.qrc">
+     <normaloff>:/ToolButton/resources/AutoPercentEnd.png</normaloff>:/ToolButton/resources/AutoPercentEnd.png</iconset>
+   </property>
+   <property name="text">
+    <string>Авто % в кон&amp;це</string>
+   </property>
+   <property name="iconText">
+    <string>Авто % в конце</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>sbFontSize</tabstop>
+  <tabstop>ComboBoxLanguage</tabstop>
+  <tabstop>ComboBoxLanguageUI</tabstop>
+  <tabstop>lineEditRowIndicator</tabstop>
+  <tabstop>tbvPrabhupadaDictionary</tabstop>
+  <tabstop>ComboBoxSanskrit</tabstop>
+  <tabstop>ComboBoxTranslate</tabstop>
+ </tabstops>
+ <resources>
+  <include location="PrabhupadaDictionary.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,12 @@
+*.obj
+*.dcu
+*.tds
+*.rar
+*.zip
+*.7z
+*.tar.gz
+*.$*
+*.~*
+*.*~
+..\.git
+..\Release
