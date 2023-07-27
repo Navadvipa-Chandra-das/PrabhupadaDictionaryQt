@@ -413,6 +413,7 @@ class QPrabhupadaDictionary : public QAbstractTableModel
     void PreparePrabhupadaSlovarVector();
 
     static const QString PrabhupadaDictionaryFiles;
+    static const QString PrabhupadaDictionaryLang;
     static QPrabhupadaPrimer PrabhupadaPrimer;
     static void PreparePrabhupadaPrimer();
     static QString RemoveDiacritics( const QString& S );

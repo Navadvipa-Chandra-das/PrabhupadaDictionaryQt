@@ -237,7 +237,6 @@ class QStorageDialog : public QDialog
 public:
     QStorageDialog( QWidget *parent = nullptr );
     ~QStorageDialog();
-    QStorage *m_Storage = nullptr;
     void LoadFromStream( QDataStream &ST ) override;
     void SaveToStream( QDataStream &ST ) override;
 private:

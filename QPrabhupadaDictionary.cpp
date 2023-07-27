@@ -5,6 +5,7 @@
 
 QPrabhupadaPrimer QPrabhupadaDictionary::PrabhupadaPrimer;
 const QString QPrabhupadaDictionary::PrabhupadaDictionaryFiles = QString( "./resources/PrabhupadaDictionaryFiles/" );
+const QString QPrabhupadaDictionary::PrabhupadaDictionaryLang = QString( "./resources/Lang/" );
 
 QStringMap::QStringMap()
   : inherited()
@@ -693,7 +694,7 @@ void QPrabhupadaDictionary::LanguageUIIndexChanged( int Value )
     int L = m_LanguageVector.m_Vector.size();
     if ( Value > -1 && L > Value ) {
       QString AFileTranslate = "PrabhupadaDictionary_" + m_LanguageVector.m_Vector[ Value ].m_Language + ".qm";
-      if ( m_Translator.load( AFileTranslate, PrabhupadaDictionaryFiles ) ) {
+      if ( m_Translator.load( AFileTranslate, PrabhupadaDictionaryLang ) ) {
         qApp->installTranslator( &m_Translator );
         QGuiApplication::setApplicationDisplayName( tr( "Словарь Шрилы Прабхупады!" ) );
         m_LanguageUIIndex.m_NeedMainWork = false;
