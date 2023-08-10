@@ -38,9 +38,10 @@ private:
     void pushButtonOKClicked();
     void pushButtonCancelClicked();
 protected:
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
     void changeEvent( QEvent *event ) override;
+public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
 };
 
 #endif // QPRABHUPADALOGINDIALOG_H

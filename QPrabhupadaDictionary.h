@@ -96,6 +96,7 @@ class QPrabhupadaFindOptions
 
     void LoadFromStream( QDataStream &ST );
     void SaveToStream  ( QDataStream &ST );
+  public:
     QPrabhupadaFindOptions& operator = ( const QPrabhupadaFindOptions&  A );
     QPrabhupadaFindOptions& operator = (       QPrabhupadaFindOptions&& A );
     bool operator == ( const QPrabhupadaFindOptions& A )
@@ -150,10 +151,8 @@ class QFilterSlovar
     void SetTranslate( const QString &Value );
     void SetSanskritWithoutDiakritik( const QString& Value );
     void SetTranslateWithoutDiakritik( const QString& Value );
-
     void LoadFromStream( QDataStream &ST );
     void SaveToStream( QDataStream &ST );
-
     QFilterSlovar& operator = ( const QFilterSlovar& A );
     QFilterSlovar& operator = ( QFilterSlovar&& A );
     bool operator == ( const QFilterSlovar& A )
@@ -358,12 +357,14 @@ class QLanguageVector : public QObject
     QVectorType m_Vector;
     bool m_LoadSuccess = false;
     int FindLanguage( const QString &S );
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
+  public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
 };
 
 class QLanguageIndex : public QEmitInt
 {
+    Q_OBJECT
   private:
     using inherited = QEmitInt;
   public:
@@ -376,6 +377,9 @@ class QLanguageIndex : public QEmitInt
     void PrepareComboBox( QComboBox *CB );
     void ComboBoxAddItem( QComboBox *CB, const QString &S );
     inline QLanguageInfo& LanguageInfo() { return m_LanguageVector.m_Vector[ m_Value ]; };
+  public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
   protected:
 };
 
@@ -419,10 +423,10 @@ class QPrabhupadaDictionary : public QAbstractTableModel
     static QString RemoveDiacritics( const QString& S );
     static bool PrabhupadaCompareLess( const QString& A, const QString& B );
     static bool PrabhupadaCompareMore( const QString& A, const QString& B );
-
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
-
+  public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
+  public:
     int rowCount( const QModelIndex &parent = QModelIndex() ) const override;
     int columnCount( const QModelIndex &parent = QModelIndex() ) const override;
     QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const override;

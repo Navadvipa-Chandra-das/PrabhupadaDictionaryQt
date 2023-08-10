@@ -11,6 +11,59 @@
 #include <map>
 #include <memory>
 
+// В CopperSpice you can make a template
+/*
+template < class TValueType >
+class QEmitValue : public QObject
+{
+  CS_OBJECT( QEmitValue )
+  public:
+    using inherited = QObject;
+    TValueType m_Value;
+    bool m_NeedMainWork = true;
+    int m_Stop = 0;
+    QEmitValue() = delete;
+    QEmitValue( TValueType Value )
+      : inherited()
+      , m_Value( Value ) {};
+    ~QEmitValue() {};
+
+    CS_SIGNAL_1( Public, void SignalValueChanged( TValueType Value ) )
+    CS_SIGNAL_2( SignalValueChanged, Value )
+
+    void SetValue( TValueType Value )
+    {
+      if ( m_Stop == 0 && m_Value != Value ) {
+        m_Value = Value;
+        m_NeedMainWork = true;
+        emit SignalValueChanged( m_Value );
+      }
+    };
+    void LoadFromStream( QDataStream &ST )
+    {
+      TValueType N;
+      ST >> N;
+      SetValue( N );
+    };
+    void SaveToStream( QDataStream &ST )
+    {
+      ST << m_Value;
+    };
+    inline void EmitValueChanged( bool ANeedResetMainWork = false )
+    {
+      if ( ANeedResetMainWork ) {
+        m_NeedMainWork = true;
+      }
+      emit SignalValueChanged( m_Value );
+      m_NeedMainWork = false;
+    };
+  protected:
+};
+
+using QEmitInt  = QEmitValue< int >;
+using QEmitBool = QEmitValue< bool >;
+*/
+
 class QEmitInt : public QObject
 {
     Q_OBJECT
@@ -186,8 +239,10 @@ class QStorage : public QObject
 
     bool LoadObject( QObject *O, QStorageKind AStorageKind );
     void SaveObject( QObject *O, QStorageKind AStorageKind );
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
+  public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
+  public:
     void SaveToStreamPrepareHistory( QComboBox *CB, QDataStream &ST, int HistoryCount );
 
     static const QChar CharPercent;
@@ -222,8 +277,9 @@ class QStorageMainWindow : public QMainWindow
     ~QStorageMainWindow();
     QStorageKind m_StorageKind = QStorageKind::File;
     QStorage *m_Storage = nullptr;
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
+  public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
   private:
     using inherited = QMainWindow;
   protected:
@@ -237,8 +293,9 @@ class QStorageDialog : public QDialog
 public:
     QStorageDialog( QWidget *parent = nullptr );
     ~QStorageDialog();
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
+public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
 private:
     using inherited = QDialog;
 };

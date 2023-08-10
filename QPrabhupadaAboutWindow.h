@@ -30,11 +30,12 @@ class QPrabhupadaAboutWindow : public QStorageDialog
     ~QPrabhupadaAboutWindow();
     Ui::QPrabhupadaAboutWindow *m_ui = new Ui::QPrabhupadaAboutWindow;
     QStorage *m_Storage;
+  public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
   private:
     using inherited = QStorageDialog;
   protected:
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
     void changeEvent( QEvent *event ) override;
 };
 

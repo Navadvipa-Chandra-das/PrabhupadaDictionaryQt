@@ -30,19 +30,19 @@ class QPrabhupadaGoToLineWindow : public QStorageDialog
     ~QPrabhupadaGoToLineWindow();
     Ui::QPrabhupadaGoToLineWindow *m_ui = new Ui::QPrabhupadaGoToLineWindow;
     QStorage *m_Storage;
-
-  signals :
+  signals:
     void SignalGoToLine( int Value );
   private:
     using inherited = QStorageDialog;
     void PushButtonGoClicked();
     void PushButtonCancelClicked();
   protected:
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
     void changeEvent( QEvent *event ) override;
     // void showEvent( QShowEvent *event ) override;
     // void closeEvent( QCloseEvent *event ) override;
+  public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
 };
 
 #endif

@@ -84,11 +84,11 @@ bool QStorage::BeginLoad( QObject *O, QStorageKind AStorageKind )
     case QStorageKind::DB :
       if ( m_Query != nullptr ) {
         m_Query->prepare( QString( "select\n"
-                                  "  a.\"UserRegKey\"\n"
-                                  ", a.\"UserData\"\n"
-                                  "from\n"
-                                  "    %1\"UserReg\" a\n"
-                                  "where a.\"UserRegKey\" = :UserRegKey;" ).arg( m_Schema ) );
+                                   "  a.\"UserRegKey\"\n"
+                                   ", a.\"UserData\"\n"
+                                   "from\n"
+                                   "    %1\"UserReg\" a\n"
+                                   "where a.\"UserRegKey\" = :UserRegKey;" ).arg( m_Schema ) );
         m_Query->bindValue( ":UserRegKey", m_FileName );
         m_Query->exec();
         if ( m_Query->next() ) {
@@ -226,7 +226,9 @@ bool QStorage::LoadObject( QObject *O, QStorageKind AStorageKind )
         qint8 V;
         *m_Stream >> V;
         if ( V == m_Version ) {
-          O->LoadFromStream( *m_Stream );
+          QMetaObject::invokeMethod( O, "LoadFromStream", Q_ARG( QDataStream&, *m_Stream ) );
+          // But it was possible to call a virtual function
+          // O->LoadFromStream( *m_Stream );
           *m_Stream >> V;
           if ( V == m_Version ) {
             LoadSuccess = true;
@@ -245,7 +247,9 @@ void QStorage::SaveObject( QObject *O, QStorageKind AStorageKind )
     BeginSave( O, AStorageKind );
     if ( m_Stream != nullptr ) {
       *m_Stream << m_Version;
-      O->SaveToStream( *m_Stream );
+      QMetaObject::invokeMethod( O, "SaveToStream", Q_ARG( QDataStream&, *m_Stream ) );
+      // But it was possible to call a virtual function
+      // O->SaveToStream( *m_Stream );
       *m_Stream << m_Version;
       EndSave( AStorageKind );
     }
@@ -361,15 +365,11 @@ void QStorage::SaveToStreamPrepareHistory( QComboBox *CB, QDataStream &ST, int H
 
 void QStorage::LoadFromStream( QDataStream &ST )
 {
-  inherited::LoadFromStream( ST );
-
   m_MapMemoryStorage.LoadFromStream( ST );
 }
 
 void QStorage::SaveToStream( QDataStream &ST )
 {
-  inherited::SaveToStream( ST );
-
   m_MapMemoryStorage.SaveToStream( ST );
 }
 
@@ -496,8 +496,6 @@ void QStorageMainWindow::closeEvent( QCloseEvent *event )
 
 void QStorageMainWindow::LoadFromStream( QDataStream &ST )
 {
-  QObject::LoadFromStream( ST );
-
   QByteArray BA;
   // 1
   ST >> BA;
@@ -509,8 +507,6 @@ void QStorageMainWindow::LoadFromStream( QDataStream &ST )
 
 void QStorageMainWindow::SaveToStream( QDataStream &ST )
 {
-  QObject::SaveToStream( ST );
-
   // 1, 2
   ST << saveGeometry() << saveState();
 }
@@ -526,8 +522,6 @@ QStorageDialog::~QStorageDialog()
 
 void QStorageDialog::LoadFromStream( QDataStream &ST )
 {
-  QObject::LoadFromStream( ST );
-
   QByteArray BA;
   // 1
   ST >> BA;
@@ -536,8 +530,6 @@ void QStorageDialog::LoadFromStream( QDataStream &ST )
 
 void QStorageDialog::SaveToStream( QDataStream &ST )
 {
-  QObject::SaveToStream( ST );
-
   // 1
   ST << saveGeometry();
 }

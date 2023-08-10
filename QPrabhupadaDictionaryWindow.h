@@ -27,6 +27,9 @@ public:
     QPrabhupadaDictionary *m_PrabhupadaDictionary;
     void PrepareDictionary();
     void FirstShow();
+public slots:
+    void LoadFromStream( QDataStream &ST );
+    void SaveToStream( QDataStream &ST );
 private:
     using inherited = QStorageMainWindow;
 
@@ -85,8 +88,6 @@ private:
 protected:
     void changeEvent( QEvent *event ) override;
     void closeEvent( QCloseEvent *event ) override;
-    void LoadFromStream( QDataStream &ST ) override;
-    void SaveToStream( QDataStream &ST ) override;
     void SpinBoxFontSizeChanged( int Value );
     virtual void FontSizeChanged( int Value );
     virtual void PrabhupadaTableResized();

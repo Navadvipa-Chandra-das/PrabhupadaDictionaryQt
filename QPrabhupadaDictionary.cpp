@@ -178,7 +178,6 @@ int QLanguageVector::FindLanguage( const QString &S )
 
 void QLanguageVector::LoadFromStream( QDataStream &ST )
 {
-  inherited::LoadFromStream( ST );
   // 1
   m_Vector.clear();
   int L;
@@ -199,7 +198,6 @@ void QLanguageVector::LoadFromStream( QDataStream &ST )
 
 void QLanguageVector::SaveToStream( QDataStream &ST )
 {
-  inherited::SaveToStream( ST );
   // 1
   int L = m_Vector.size();
   ST << L;
@@ -448,6 +446,16 @@ void QLanguageIndex::ComboBoxAddItem( QComboBox *CB, const QString &S )
   }
 }
 
+void QLanguageIndex::LoadFromStream( QDataStream &ST )
+{
+  inherited::LoadFromStream( ST );
+}
+
+void QLanguageIndex::SaveToStream( QDataStream &ST )
+{
+  inherited::SaveToStream( ST );
+}
+
 QPrabhupadaDictionary::QPrabhupadaDictionary( QObject *parent )
   : inherited( parent )
 {
@@ -655,7 +663,6 @@ void QPrabhupadaDictionary::PreparePrabhupadaSlovarVector()
 
 void QPrabhupadaDictionary::LoadFromStream( QDataStream &ST )
 {
-  inherited::LoadFromStream( ST );
   // m_LanguageUIIndex загружается в main() из файла!
   // 1
   m_LanguageIndex.LoadFromStream( ST );
@@ -667,7 +674,6 @@ void QPrabhupadaDictionary::LoadFromStream( QDataStream &ST )
 
 void QPrabhupadaDictionary::SaveToStream( QDataStream &ST )
 {
-  inherited::SaveToStream( ST );
   // m_LanguageUIIndex сохраняется в QPrabhupadaDictionaryWindow::closeEvent() в файл!
   // 1
   m_LanguageIndex.SaveToStream( ST );

@@ -78,7 +78,6 @@ void QPrabhupadaLoginDialog::LoadFromStream( QDataStream &ST )
 void QPrabhupadaLoginDialog::SaveToStream( QDataStream &ST )
 {
   inherited::SaveToStream( ST );
-
   // 1
   QStorage::SaveToStream( m_ui->ComboBoxUserName, ST );
   // 2
