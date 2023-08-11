@@ -11,7 +11,7 @@
 #include <map>
 #include <memory>
 
-// В CopperSpice you can make a template
+// In CopperSpice you can make a template
 /*
 template < class TValueType >
 class QEmitValue : public QObject
@@ -239,19 +239,13 @@ class QStorage : public QObject
 
     bool LoadObject( QObject *O, QStorageKind AStorageKind );
     void SaveObject( QObject *O, QStorageKind AStorageKind );
+    void RemoveMemory( QObject *O );
+    void ClearMemory() { m_MapMemoryStorage.clear(); };
+
+    void SaveToStreamPrepareHistory( QComboBox *CB, QDataStream &ST, int HistoryCount );
   public slots:
     void LoadFromStream( QDataStream &ST );
     void SaveToStream( QDataStream &ST );
-  public:
-    void SaveToStreamPrepareHistory( QComboBox *CB, QDataStream &ST, int HistoryCount );
-
-    static const QChar CharPercent;
-    static const QChar CharUnderline;
-
-    // This function was suggested to me by Lord Sri Krishna!
-    static bool Like( QString::iterator t_end, QString::iterator s_end, QString::iterator t, QString::iterator s );
-    // Lord Sri Krishna suggested this function to another programmer! It is better, since there is no recursion and the stack memory cannot overflow!
-    static bool LikeBest( const QString& Template, const QString& Source );
   private:
     using inherited = QObject;
     QSqlQuery* m_Query = nullptr;

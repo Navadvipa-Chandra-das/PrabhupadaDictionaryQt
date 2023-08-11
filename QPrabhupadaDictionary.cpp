@@ -752,34 +752,34 @@ void QPrabhupadaDictionary::FilterSlovarChanged( QFilterSlovar Value )
               , ATranslateWithoutDiakritik = Value.m_TranslateWithoutDiakritik;
 
         if ( Value.m_PrabhupadaFindOptions.m_AutoPercentBegin ) {
-          ASanskritWithoutDiakritik  = QStorage::CharPercent + ASanskritWithoutDiakritik;
-          ATranslateWithoutDiakritik = QStorage::CharPercent + ATranslateWithoutDiakritik;
+          ASanskritWithoutDiakritik  = CharPercent + ASanskritWithoutDiakritik;
+          ATranslateWithoutDiakritik = CharPercent + ATranslateWithoutDiakritik;
         }
 
         if ( Value.m_PrabhupadaFindOptions.m_AutoPercentEnd ) {
-          ASanskritWithoutDiakritik  = ASanskritWithoutDiakritik  + QStorage::CharPercent;
-          ATranslateWithoutDiakritik = ATranslateWithoutDiakritik + QStorage::CharPercent;
+          ASanskritWithoutDiakritik  = ASanskritWithoutDiakritik  + CharPercent;
+          ATranslateWithoutDiakritik = ATranslateWithoutDiakritik + CharPercent;
         }
 
         for ( int I = 0; I < L; ++I ) {
           NeedTranslate = false;
 
           if ( CheckSanskrit ) {
-            NeedSanskrit =
-              QStorage::Like( ASanskritWithoutDiakritik.end()
-                                      , m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik.end()
-                                      , ASanskritWithoutDiakritik.begin()
-                                      , m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik.begin() );
+            NeedSanskrit = LikeBest( ASanskritWithoutDiakritik, m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik );
+//              Like( ASanskritWithoutDiakritik.end()
+//                  , m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik.end()
+//                  , ASanskritWithoutDiakritik.begin()
+//                  , m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik.begin() );
           } else {
             NeedSanskrit = true;
           }
           if ( NeedSanskrit ) {
             if ( CheckTranslate ) {
-              NeedTranslate =
-                QStorage::Like( ATranslateWithoutDiakritik.end()
-                                        , m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik.end()
-                                        , ATranslateWithoutDiakritik.begin()
-                                        , m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik.begin() );
+                NeedTranslate = LikeBest( ATranslateWithoutDiakritik, m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik );
+//                Like( ATranslateWithoutDiakritik.end()
+//                    , m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik.end()
+//                    , ATranslateWithoutDiakritik.begin()
+//                    , m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik.begin() );
             } else {
               NeedTranslate = true;
             }
@@ -974,4 +974,107 @@ void QPrabhupadaDictionary::AutoPercentEndChanged( bool Value )
     YI.m_FilterSlovar.m_PrabhupadaFindOptions.m_AutoPercentEnd = Value;
     m_AutoPercentEnd.m_NeedMainWork = false;
   }
+}
+
+const QChar CharPercent   = '%';
+const QChar CharUnderline = '_';
+
+bool Like( QString::iterator t_end, QString::iterator s_end, QString::iterator t, QString::iterator s )
+{
+  if ( t == t_end ) {
+    return true;
+  }
+  QString::iterator tt, ss;
+  while ( t != t_end && s != s_end ) {
+    if ( ( *t ) == CharPercent ) {
+        tt = ++t;
+        ss = s;
+        while ( ( ss != s_end ) ) {
+        if ( Like( t_end, s_end, tt, ss++ ) ) {
+          return true;
+        }
+        }
+        return false;
+    }
+    if ( ( ( *t ) != ( *s ) ) && ( ( *t ) != CharUnderline ) ) {
+        return false;
+    }
+    t++;
+    s++;
+  }
+  if ( ( s != s_end ) ) {
+    return false;
+  }
+  if ( t == t_end ) {
+    return true;
+  }
+  do {
+    if ( ( *t ) != CharPercent ) {
+        return false;
+    }
+  } while ( ++t != t_end );
+  return true;
+}
+
+bool LikeBest( const QString& Template, const QString& Source )
+{
+  int I, J, K
+      , LTemplate = Template.size()
+      , LSource   = Source.size();
+
+  bool Result = false;
+
+  I = 0;
+  J = 0;
+  while ( I < LTemplate && J < LSource ) {
+    if ( Template[ I ] == CharPercent ) {
+        while ( I < LTemplate && ( Template[ I ] == CharPercent || Template[ I ] == CharUnderline ) ) {
+        ++I;
+        }
+        if ( I >= LTemplate ) {
+        Result = true;
+        } else {
+        while ( J < LSource ) {
+          while ( Source[ J ] != Template[ I ] && J <= LSource ) {
+            ++J;
+          }
+          if ( J >= LSource ) {
+            break;
+          }
+          K = 0;
+          while ( ( Source[ J + K ] == Template[ I + K ] ) &&
+                 ( J + K < LSource && I + K < LTemplate ) &&
+                 ( !( Template[ I + K ] == CharPercent || Template[ I + K ] == CharUnderline ) )
+                 ) {
+            ++K;
+          }
+          if ( ( Template[ I + K ] == CharPercent || Template[ I + K ] == CharUnderline ) || ( I + K >= LTemplate ) ) {
+            I = I + K - 1;
+            J = J + K - 1;
+            break;
+          }
+          J = J + K;
+        }
+        }
+        if ( J >= LSource ) {
+        break;
+        }
+    } else if ( Template[ I ] != CharUnderline ) {
+        if ( Source[ J ] != Template[ I ] ) {
+        break;
+        }
+    }
+    ++I;
+    ++J;
+    if ( J >= LSource ) {
+        K = 0;
+        while ( Template[ I + K ] == CharPercent && I + K < LTemplate ) {
+        ++K;
+        }
+        if ( I + K >= LTemplate ) {
+        Result = true;
+        }
+    }
+  }
+  return Result;
 }

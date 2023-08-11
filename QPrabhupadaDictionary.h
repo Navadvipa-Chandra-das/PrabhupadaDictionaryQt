@@ -442,4 +442,10 @@ class QPrabhupadaDictionary : public QAbstractTableModel
   protected:
 };
 
+extern const QChar CharPercent;
+extern const QChar CharUnderline;
+
+bool Like( QString::iterator t_end, QString::iterator s_end, QString::iterator t, QString::iterator s );
+bool LikeBest( const QString& Template, const QString& Source );
+
 #endif

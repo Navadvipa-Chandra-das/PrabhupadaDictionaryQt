@@ -218,7 +218,7 @@ void QStorage::EndSave( QStorageKind AStorageKind )
 
 bool QStorage::LoadObject( QObject *O, QStorageKind AStorageKind )
 {
-  bool LoadSuccess = false;
+  bool LoadSuccess = false, InvokeSuccess = false;
   if ( m_Enabled ) {
 
     if ( BeginLoad( O, AStorageKind ) ) {
@@ -226,7 +226,7 @@ bool QStorage::LoadObject( QObject *O, QStorageKind AStorageKind )
         qint8 V;
         *m_Stream >> V;
         if ( V == m_Version ) {
-          QMetaObject::invokeMethod( O, "LoadFromStream", Q_ARG( QDataStream&, *m_Stream ) );
+          InvokeSuccess = QMetaObject::invokeMethod( O, "LoadFromStream", Q_ARG( QDataStream&, *m_Stream ) );
           // But it was possible to call a virtual function
           // O->LoadFromStream( *m_Stream );
           *m_Stream >> V;
@@ -238,7 +238,7 @@ bool QStorage::LoadObject( QObject *O, QStorageKind AStorageKind )
     }
     EndLoad( AStorageKind );
   }
-  return LoadSuccess;
+  return LoadSuccess && InvokeSuccess;
 }
 
 void QStorage::SaveObject( QObject *O, QStorageKind AStorageKind )
@@ -254,6 +254,12 @@ void QStorage::SaveObject( QObject *O, QStorageKind AStorageKind )
       EndSave( AStorageKind );
     }
   }
+}
+
+void QStorage::RemoveMemory( QObject *O )
+{
+  QString S = KeyStorage( O, QStorageKind::Memory );
+  m_MapMemoryStorage.erase( S );
 }
 
 QString QStorage::PrefixKeyStorage()
@@ -371,109 +377,6 @@ void QStorage::LoadFromStream( QDataStream &ST )
 void QStorage::SaveToStream( QDataStream &ST )
 {
   m_MapMemoryStorage.SaveToStream( ST );
-}
-
-const QChar QStorage::CharPercent   = '%';
-const QChar QStorage::CharUnderline = '_';
-
-bool QStorage::Like( QString::iterator t_end, QString::iterator s_end, QString::iterator t, QString::iterator s )
-{
-  if ( t == t_end ) {
-    return true;
-  }
-  QString::iterator tt, ss;
-  while ( t != t_end && s != s_end ) {
-    if ( ( *t ) == CharPercent ) {
-      tt = ++t;
-      ss = s;
-      while ( ( ss != s_end ) ) {
-        if ( Like( t_end, s_end, tt, ss++ ) ) {
-          return true;
-        }
-      }
-      return false;
-    }
-    if ( ( ( *t ) != ( *s ) ) && ( ( *t ) != CharUnderline ) ) {
-      return false;
-    }
-    t++;
-    s++;
-  }
-  if ( ( s != s_end ) ) {
-    return false;
-  }
-  if ( t == t_end ) {
-    return true;
-  }
-  do {
-    if ( ( *t ) != CharPercent ) {
-      return false;
-    }
-  } while ( ++t != t_end );
-  return true;
-}
-
-bool QStorage::LikeBest( const QString& Template, const QString& Source )
-{
-  int I, J, K
-    , LTemplate = Template.size()
-    , LSource   = Source.size();
-
-  bool Result = false;
-
-  I = 0;
-  J = 0;
-  while ( I < LTemplate && J < LSource ) {
-    if ( Template[ I ] == CharPercent ) {
-      while ( I < LTemplate && ( Template[ I ] == CharPercent || Template[ I ] == CharUnderline ) ) {
-        ++I;
-      }
-      if ( I >= LTemplate ) {
-        Result = true;
-      } else {
-        while ( J < LSource ) {
-          while ( Source[ J ] != Template[ I ] && J <= LSource ) {
-            ++J;
-          }
-          if ( J >= LSource ) {
-            break;
-          }
-          K = 0;
-          while ( ( Source[ J + K ] == Template[ I + K ] ) &&
-                  ( J + K < LSource && I + K < LTemplate ) &&
-                  ( !( Template[ I + K ] == CharPercent || Template[ I + K ] == CharUnderline ) )
-                ) {
-            ++K;
-          }
-          if ( ( Template[ I + K ] == CharPercent || Template[ I + K ] == CharUnderline ) || ( I + K >= LTemplate ) ) {
-            I = I + K - 1;
-            J = J + K - 1;
-            break;
-          }
-          J = J + K;
-        }
-      }
-      if ( J >= LSource ) {
-        break;
-      }
-    } else if ( Template[ I ] != CharUnderline ) {
-      if ( Source[ J ] != Template[ I ] ) {
-        break;
-      }
-    }
-    ++I;
-    ++J;
-    if ( J >= LSource ) {
-      K = 0;
-      while ( Template[ I + K ] == CharPercent && I + K < LTemplate ) {
-        ++K;
-      }
-      if ( I + K >= LTemplate ) {
-        Result = true;
-      }
-    }
-  }
-  return Result;
 }
 
 QStorageMainWindow::QStorageMainWindow( QWidget *parent )
