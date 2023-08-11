@@ -765,21 +765,19 @@ void QPrabhupadaDictionary::FilterSlovarChanged( QFilterSlovar Value )
           NeedTranslate = false;
 
           if ( CheckSanskrit ) {
-            NeedSanskrit = LikeBest( ASanskritWithoutDiakritik, m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik );
-//              Like( ASanskritWithoutDiakritik.end()
-//                  , m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik.end()
-//                  , ASanskritWithoutDiakritik.begin()
-//                  , m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik.begin() );
+            NeedSanskrit = Like( ASanskritWithoutDiakritik.end()
+                  , m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik.end()
+                  , ASanskritWithoutDiakritik.begin()
+                  , m_PrabhupadaSlovarVector[ I ]->m_SanskritWithoutDiakritik.begin() );
           } else {
             NeedSanskrit = true;
           }
           if ( NeedSanskrit ) {
             if ( CheckTranslate ) {
-                NeedTranslate = LikeBest( ATranslateWithoutDiakritik, m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik );
-//                Like( ATranslateWithoutDiakritik.end()
-//                    , m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik.end()
-//                    , ATranslateWithoutDiakritik.begin()
-//                    , m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik.begin() );
+                NeedTranslate = Like( ATranslateWithoutDiakritik.end()
+                    , m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik.end()
+                    , ATranslateWithoutDiakritik.begin()
+                    , m_PrabhupadaSlovarVector[ I ]->m_TranslateWithoutDiakritik.begin() );
             } else {
               NeedTranslate = true;
             }
@@ -1014,67 +1012,4 @@ bool Like( QString::iterator t_end, QString::iterator s_end, QString::iterator t
     }
   } while ( ++t != t_end );
   return true;
-}
-
-bool LikeBest( const QString& Template, const QString& Source )
-{
-  int I, J, K
-      , LTemplate = Template.size()
-      , LSource   = Source.size();
-
-  bool Result = false;
-
-  I = 0;
-  J = 0;
-  while ( I < LTemplate && J < LSource ) {
-    if ( Template[ I ] == CharPercent ) {
-        while ( I < LTemplate && ( Template[ I ] == CharPercent || Template[ I ] == CharUnderline ) ) {
-        ++I;
-        }
-        if ( I >= LTemplate ) {
-        Result = true;
-        } else {
-        while ( J < LSource ) {
-          while ( Source[ J ] != Template[ I ] && J <= LSource ) {
-            ++J;
-          }
-          if ( J >= LSource ) {
-            break;
-          }
-          K = 0;
-          while ( ( Source[ J + K ] == Template[ I + K ] ) &&
-                 ( J + K < LSource && I + K < LTemplate ) &&
-                 ( !( Template[ I + K ] == CharPercent || Template[ I + K ] == CharUnderline ) )
-                 ) {
-            ++K;
-          }
-          if ( ( Template[ I + K ] == CharPercent || Template[ I + K ] == CharUnderline ) || ( I + K >= LTemplate ) ) {
-            I = I + K - 1;
-            J = J + K - 1;
-            break;
-          }
-          J = J + K;
-        }
-        }
-        if ( J >= LSource ) {
-        break;
-        }
-    } else if ( Template[ I ] != CharUnderline ) {
-        if ( Source[ J ] != Template[ I ] ) {
-        break;
-        }
-    }
-    ++I;
-    ++J;
-    if ( J >= LSource ) {
-        K = 0;
-        while ( Template[ I + K ] == CharPercent && I + K < LTemplate ) {
-        ++K;
-        }
-        if ( I + K >= LTemplate ) {
-        Result = true;
-        }
-    }
-  }
-  return Result;
 }

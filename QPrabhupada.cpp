@@ -227,8 +227,6 @@ bool QStorage::LoadObject( QObject *O, QStorageKind AStorageKind )
         *m_Stream >> V;
         if ( V == m_Version ) {
           InvokeSuccess = QMetaObject::invokeMethod( O, "LoadFromStream", Q_ARG( QDataStream&, *m_Stream ) );
-          // But it was possible to call a virtual function
-          // O->LoadFromStream( *m_Stream );
           *m_Stream >> V;
           if ( V == m_Version ) {
             LoadSuccess = true;
@@ -248,8 +246,6 @@ void QStorage::SaveObject( QObject *O, QStorageKind AStorageKind )
     if ( m_Stream != nullptr ) {
       *m_Stream << m_Version;
       QMetaObject::invokeMethod( O, "SaveToStream", Q_ARG( QDataStream&, *m_Stream ) );
-      // But it was possible to call a virtual function
-      // O->SaveToStream( *m_Stream );
       *m_Stream << m_Version;
       EndSave( AStorageKind );
     }
