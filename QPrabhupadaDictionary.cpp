@@ -167,7 +167,7 @@ QLanguageVector::~QLanguageVector()
 {
 }
 
-int QLanguageVector::FindLanguage( const QString &S )
+std::size_t QLanguageVector::FindLanguage( const QString &S )
 {
   std::size_t L = m_Vector.size(), I = 0;
   for( ; I < L; ++I )
@@ -180,10 +180,10 @@ void QLanguageVector::LoadFromStream( QDataStream &ST )
 {
   // 1
   m_Vector.clear();
-  int L;
+  std::size_t L;
   ST >> L;
   QLanguageInfo YI;
-  for ( int I = 0; I < L; ++I ) {
+  for ( std::size_t I = 0; I < L; ++I ) {
     ST >> YI.m_ID;
     ST >> YI.m_Language;
     ST >> YI.m_LanguageSlovo;
@@ -199,7 +199,7 @@ void QLanguageVector::LoadFromStream( QDataStream &ST )
 void QLanguageVector::SaveToStream( QDataStream &ST )
 {
   // 1
-  int L = m_Vector.size();
+  std::size_t L = m_Vector.size();
   ST << L;
   for ( QVectorType::iterator I = m_Vector.begin(); I != m_Vector.end(); ++I ) {
     ST << (*I).m_ID;
@@ -410,7 +410,7 @@ void QPrabhupadaZakladkaMap::SaveToStream( QDataStream &ST )
 }
 
 QLanguageIndex::QLanguageIndex( int Value
-                              , QLanguageVector &ALanguageVector )
+                              , QLanguageVector& ALanguageVector )
   : inherited( Value )
   , m_LanguageVector( ALanguageVector )
 {
@@ -425,6 +425,7 @@ void QLanguageIndex::PrepareComboBox( QComboBox *CB )
   if ( CB ) {
     ++m_Stop;
     CB->clear();
+
     for ( QLanguageVector::QVectorType::iterator i = m_LanguageVector.m_Vector.begin(); i != m_LanguageVector.m_Vector.end(); ++i ) {
       CB->addItem( ( *i ).m_LanguageSlovo );
     }
@@ -656,7 +657,7 @@ void QPrabhupadaDictionary::PreparePrabhupadaSlovarVector()
       m_PrabhupadaSlovarVector.push_back( ST );
     }
     m_PrabhupadaOrder.EmitValueChanged( true );
-    emit endResetModel();
+    /*emit */endResetModel();
     m_LanguageIndex.m_NeedMainWork = false;
   }
 }
@@ -686,10 +687,10 @@ void QPrabhupadaDictionary::SaveToStream( QDataStream &ST )
 void QPrabhupadaDictionary::LanguageIndexChanged( int Value )
 {
   if ( m_LanguageIndex.m_NeedMainWork ) {
-    int L = m_LanguageVector.m_Vector.size();
+    std::size_t L = m_LanguageVector.m_Vector.size();
     if ( Value > -1 && L > Value ) {
       PreparePrabhupadaSlovarVector();
-      m_PrabhupadaFilterSlovar.SetValue( m_LanguageVector.m_Vector[ m_LanguageIndex.m_Value ].m_FilterSlovar );
+      m_PrabhupadaFilterSlovar.SetValue( m_LanguageVector.m_Vector[ Value ].m_FilterSlovar );
     }
   }
 }
@@ -697,7 +698,7 @@ void QPrabhupadaDictionary::LanguageIndexChanged( int Value )
 void QPrabhupadaDictionary::LanguageUIIndexChanged( int Value )
 {
   if ( m_LanguageUIIndex.m_NeedMainWork ) {
-    int L = m_LanguageVector.m_Vector.size();
+    std::size_t L = m_LanguageVector.m_Vector.size();
     if ( Value > -1 && L > Value ) {
       QString AFileTranslate = "PrabhupadaDictionary_" + m_LanguageVector.m_Vector[ Value ].m_Language + ".qm";
       if ( m_Translator.load( AFileTranslate, PrabhupadaDictionaryLang ) ) {
@@ -726,7 +727,7 @@ void QPrabhupadaDictionary::FilterSlovarChanged( QFilterSlovar Value )
       bool NeedSanskrit
          , NeedTranslate;
 
-      int L = m_PrabhupadaSlovarVector.size();
+      std::size_t L = m_PrabhupadaSlovarVector.size();
       //qint64 T_Start = QDateTime::currentMSecsSinceEpoch();
 
       if ( Value.m_PrabhupadaFindOptions.m_RegularExpression ) {
@@ -793,16 +794,16 @@ void QPrabhupadaDictionary::FilterSlovarChanged( QFilterSlovar Value )
 
       m_PrabhupadaSlovarVector.m_SearchCount = ActualIndex + 1;
     } else {
-      m_PrabhupadaSlovarVector.m_SearchCount = m_PrabhupadaSlovarVector.size();
+      m_PrabhupadaSlovarVector.m_SearchCount = (int)m_PrabhupadaSlovarVector.size();
     }
     m_PrabhupadaFilterSlovar.m_NeedMainWork = false;
-    emit endResetModel();
+    /*emit */endResetModel();
   }
 }
 
 int QPrabhupadaDictionary::rowCount( const QModelIndex& /*parent*/ ) const
 {
-  int N = m_FilterSlovarIsEmpty ? m_PrabhupadaSlovarVector.size() : m_PrabhupadaSlovarVector.m_SearchCount;
+  int N = m_FilterSlovarIsEmpty ? (int)m_PrabhupadaSlovarVector.size() : m_PrabhupadaSlovarVector.m_SearchCount;
   return N;
 }
 

@@ -4,6 +4,7 @@
 #include <QScrollBar>
 #include "QPrabhupadaGoToLineWindow.h"
 #include "QPrabhupadaAboutWindow.h"
+//#include "QPrabhupadaUtil.h"
 
 //QPrabhupadaDictionaryWindow::QPrabhupadaDictionaryWindow( QWidget *parent )
 //  : QMainWindow(parent)
@@ -353,7 +354,7 @@ void QPrabhupadaDictionaryWindow::ActionSaveAllLetterToFile()
   if ( reply == QMessageBox::Yes ) {
     QString S, SB;
     std::set< QChar > Set;
-    int L = m_PrabhupadaDictionary->m_PrabhupadaSlovarVector.size();
+    std::size_t L = m_PrabhupadaDictionary->m_PrabhupadaSlovarVector.size();
     QString::size_type SL;
     QSanskritTranslate* sp;
 

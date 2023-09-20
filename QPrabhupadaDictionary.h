@@ -356,7 +356,7 @@ class QLanguageVector : public QObject
     using  QVectorType = std::vector< QLanguageInfo >;
     QVectorType m_Vector;
     bool m_LoadSuccess = false;
-    int FindLanguage( const QString &S );
+    std::size_t FindLanguage( const QString &S );
   public slots:
     void LoadFromStream( QDataStream &ST );
     void SaveToStream( QDataStream &ST );
@@ -370,7 +370,7 @@ class QLanguageIndex : public QEmitInt
   public:
     QLanguageIndex() = delete;
     QLanguageIndex( int Value
-                  , QLanguageVector &ALanguageVector );
+                  , QLanguageVector& ALanguageVector );
     ~QLanguageIndex();
     static const int RussianIndex = 4;
     QLanguageVector& m_LanguageVector;

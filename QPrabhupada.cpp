@@ -59,6 +59,7 @@ QStorage::~QStorage()
 {
   if ( m_Query != nullptr ) {
     delete m_Query;
+    m_Query = nullptr;
   }
 }
 
@@ -69,7 +70,11 @@ void QStorage::SetDatabase( QSqlDatabase *Value )
     if ( m_Query != nullptr ) {
       delete m_Query;
     }
-    m_Query = new QSqlQuery( *m_Database );
+    if ( Value == nullptr ) {
+      m_Query = nullptr;
+    } else {
+      m_Query = new QSqlQuery( *m_Database );
+    }
   }
 }
 
@@ -82,7 +87,7 @@ bool QStorage::BeginLoad( QObject *O, QStorageKind AStorageKind )
       m_Stream   = new QDataStream( m_File );
       return m_File->open( QIODevice::ReadOnly );
     case QStorageKind::DB :
-      if ( m_Query != nullptr ) {
+      if ( m_Database != nullptr && m_Database->isOpen() && m_Query != nullptr ) {
         m_Query->prepare( QString( "select\n"
                                    "  a.\"UserRegKey\"\n"
                                    ", a.\"UserData\"\n"
@@ -143,7 +148,7 @@ void QStorage::BeginSave( QObject *O, QStorageKind AStorageKind )
       }
       break;
     case QStorageKind::DB :
-      if ( m_Query != nullptr ) {
+      if ( m_Database != nullptr && m_Database->isOpen() && m_Query != nullptr ) {
         m_Query->prepare( QString( "select\n"
                                   "  a.\"UserRegKey\"\n"
                                   "from\n"

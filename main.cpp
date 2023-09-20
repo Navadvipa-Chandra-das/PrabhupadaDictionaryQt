@@ -1,7 +1,7 @@
 #include "QPrabhupadaDictionaryWindow.h"
 #include "QPrabhupadaLoginDialog.h"
 #include "QPrabhupada.h"
-//#include "QPrabhupadaUtil.h"
+#include "QPrabhupadaUtil.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -11,16 +11,6 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
-  QTranslator translator;
-  const QStringList uiLanguages = QLocale::system().uiLanguages();
-  for (const QString &locale : uiLanguages) {
-      const QString baseName = "PrabhupadaDictionary_" + QLocale(locale).name();
-      if (translator.load(":/i18n/" + baseName)) {
-          a.installTranslator(&translator);
-          break;
-      }
-  }
-
   QStorage AStorage;
 
   QPrabhupadaDictionary APrabhupadaDictionary( nullptr );
@@ -28,7 +18,9 @@ int main(int argc, char *argv[])
   APrabhupadaDictionary.m_Storage = &AStorage;
   a.setObjectName( APrabhupadaDictionary.objectName() );
 
+  PrabhupadaMessage( "1 APrabhupadaDictionary.m_LanguageVector.m_Vector.size() == " + QString::number( APrabhupadaDictionary.m_LanguageVector.m_Vector.size() ) );
   AStorage.LoadObject( &APrabhupadaDictionary.m_LanguageVector, QStorageKind::File );
+  PrabhupadaMessage( "2 APrabhupadaDictionary.m_LanguageVector.m_Vector.size() == " + QString::number( APrabhupadaDictionary.m_LanguageVector.m_Vector.size() ) );
   AStorage.LoadObject( &APrabhupadaDictionary.m_LanguageUIIndex, QStorageKind::File );
   
   QPrabhupadaLoginDialog *PrabhupadaLoginWindow = new QPrabhupadaLoginDialog( &APrabhupadaDictionary );
@@ -75,11 +67,8 @@ int main(int argc, char *argv[])
       break;
     }
   }
-  if ( PrabhupadaLoginWindow )
-      delete PrabhupadaLoginWindow;
+  if ( PrabhupadaLoginWindow ) {
+    delete PrabhupadaLoginWindow;
+  }
   return 0;
-
-  //PrabhupadaDictionaryWindow w;
-  //w.show();
-  //return a.exec();
 }
